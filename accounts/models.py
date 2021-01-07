@@ -1,3 +1,4 @@
+from django.contrib.contenttypes.models import ContentType
 from django.contrib.auth.base_user import AbstractBaseUser, BaseUserManager
 from django.contrib.auth.hashers import make_password, identify_hasher
 from django.db.models import (EmailField, CharField, BooleanField, DateTimeField)
@@ -36,7 +37,7 @@ class UserManager(BaseUserManager):
 
 
 class User(AbstractBaseUser):
-    name = CharField(max_length=255, blank=False)
+    name = CharField(max_length=255, blank=False, null=True)
     phone = CharField(max_length=12, blank=False)
     email = EmailField(unique=True, max_length=255)
     org_name = CharField(max_length=255, blank=False)
