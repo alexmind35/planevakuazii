@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    #Мои приложения
     'accounts.apps.AccountsConfig',
 ]
 
@@ -69,6 +70,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'planevakuazii.wsgi.application'
+AUTH_USER_MODEL = 'accounts.User'
 
 
 # Database
