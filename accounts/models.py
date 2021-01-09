@@ -1,90 +1,24 @@
-from django.contrib.auth.base_user import AbstractBaseUser, BaseUserManager
-from django.contrib.auth.hashers import make_password, identify_hasher
-from django.db.models import (EmailField, CharField, BooleanField, DateTimeField)
+from django.db import models
+from django.contrib.auth.models import User
 
 
-class UserManager(BaseUserManager):
-    use_in_migrations = True
-
-    def create_user(self, email, password=None, name=None, phone=None, org_name=None, org_address=None,
-                    is_active=True, is_staff=None, is_admin=None):
-        """
-        Create and save a user with the given username, email, and password.
-        """
-        if not email:
-            raise ValueError('Пользователь должен иметь e-mail адрес')
-        if not password:
-            raise ValueError('Пользователь должен ввести пароль')
-        email = self.normalize_email(email)
-        user = self.model(email=email, name=name)
-        user.set_password(password)
-        user.staff = is_staff
-        user.admin = is_admin
-        user.is_active = is_active
-        user.save(using=self._db)
-        return user
-
-    def create_superuser(self, email, password=None, name=None):
-        user = self.create_user(email, name=name, password=password,
-                                is_staff=True, is_admin=True)
-        return user
-
-    def create_staffuser(self, email, password=None, name=None):
-        user = self.create_user(email, name=name, password=password,
-                                is_staff=True, is_admin=False)
-        return user
-
-
-class User(AbstractBaseUser):
-    name = CharField(max_length=255, blank=False)
-    phone = CharField(max_length=12, blank=False)
-    email = EmailField(unique=True, max_length=255)
-    org_name = CharField(max_length=255, blank=False)
-    org_address = CharField(max_length=255, blank=False)
-    staff = BooleanField(default=False)
-    is_active = BooleanField(default=True)
-    admin = BooleanField(default=False)
-    timestamp = DateTimeField(auto_now_add=True)
-
-    USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = []
-
-    objects = UserManager()
+class Customer(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    org_name = models.CharField(max_length=255)
+    org_address = models.CharField(max_length=255)
+    phone = models.CharField(max_length=11)
+    photo_executor = models.ImageField("Фото заказчика", upload_to="accounts/customer", default="", blank=True)
 
     def __str__(self):
-        return self.email
+        return "User: {}, org_name: {}, org_address: {}, phone: {}, photo_executor: {}".format(self.user, self.org_name,
+                                                                                               self.org_address,
+                                                                                               self.phone,
+                                                                                               self.photo_executor)
 
-    def get_short_name(self):
-        if self.name:
-            return self.name
-        return self.email
 
-    def get_full_name(self):
-        if self.full_name:
-            return self.full_name
-        return self.email
+class Executor(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    photo_executor = models.ImageField("Фото исполнителя", upload_to="accounts/executor", default="", blank=True)
 
-    def has_perm(self, perm, obj=None):
-        return True
-
-    def has_module_perms(self, app_label):
-        return True
-
-    @property
-    def is_staff(self):
-        if self.admin:
-            return True
-        return self.staff
-
-    @property
-    def is_admin(self):
-        return self.admin
-
-    def save(self, *args, **kwargs):
-        try:
-            _alg = identify_hasher(self.password)
-        except ValueError:
-            self.password = make_password(self.password)
-        # if not self.id and not self.staff and not self.admin:
-        #     self.password = make_password(self.password)
-        super().save(*args, **kwargs)
+    def __str__(self):
+        return "User: {}, phone: {}".format(self.user, self.photo_executor)
