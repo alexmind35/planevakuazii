@@ -1,24 +1,53 @@
+from django.contrib.auth.base_user import AbstractBaseUser, BaseUserManager
+from django.contrib.auth.hashers import make_password, identify_hasher
+from django.contrib.auth.models import AbstractUser
+from django.db.models import (EmailField, CharField, BooleanField, DateTimeField)
 from django.db import models
-from django.contrib.auth.models import User
 
 
-class Customer(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    org_name = models.CharField(max_length=255)
-    org_address = models.CharField(max_length=255)
-    phone = models.CharField(max_length=11)
-    photo_customer = models.ImageField("Фото заказчика", upload_to="accounts/customer", default="", blank=True)
+class UserManager(BaseUserManager):
+    use_in_migrations = True
+
+    def create_user(self, email, password=None, name=None, full_name=None,
+                    is_active=True, is_staff=None, is_superuser=None):
+        """
+        Create and save a user with the given username, email, and password.
+        """
+        if not email:
+            raise ValueError('Пользователь должен иметь и-мэйл адрес')
+        if not password:
+            raise ValueError('Пользователь должен ввести пароль')
+        email = self.normalize_email(email)
+        user = self.model(email=email, name=name)
+        user.set_password(password)
+        user.is_staff = is_staff
+        user.is_superuser = is_superuser
+        user.is_active = is_active
+        user.save(using=self._db)
+        return user
+
+    def create_superuser(self, email, password=None, name=None):
+        user = self.create_user(email, name=name, password=password,
+                                is_staff=True, is_superuser=True)
+        return user
+
+    def create_staffuser(self, email, password=None, name=None):
+        user = self.create_user(email, name=name, password=password,
+                                is_staff=True, is_superuser=False)
+        return user
+
+
+class User(AbstractUser):
+    email = EmailField(unique=True, max_length=255)
+    name = CharField(max_length=255, blank=True, null=True)
+    photo = models.ImageField("Фото", upload_to="photo")
+    organization_name = models.CharField(max_length=255)
+    organization_address = models.CharField(max_length=255)
+
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = []
+
+    objects = UserManager()
 
     def __str__(self):
-        return "User: {}, org_name: {}, org_address: {}, phone: {}, photo_executor: {}".format(self.user, self.org_name,
-                                                                                               self.org_address,
-                                                                                               self.phone,
-                                                                                               self.photo_executor)
-
-
-class Executor(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    photo_executor = models.ImageField("Фото исполнителя", upload_to="accounts/executor", default="", blank=True)
-
-    def __str__(self):
-        return "User: {}, phone: {}".format(self.user, self.photo_executor)
+        return self.email

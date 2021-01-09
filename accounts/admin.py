@@ -1,6 +1,4 @@
 from django.contrib import admin
-from .models import Customer, Executor
+from .models import User
 
-admin.site.register(Customer)
-admin.site.register(Executor)
-
+admin.site.register(User)
