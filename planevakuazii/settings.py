@@ -70,7 +70,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'planevakuazii.wsgi.application'
-AUTH_USER_MODEL = 'accounts.User'
+
 
 
 # Database
