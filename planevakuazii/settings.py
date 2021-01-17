@@ -35,6 +35,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    # Библиотеки
+    'rest_framework',
+
     # Мои приложения
     'accounts.apps.AccountsConfig',
     'orders.apps.OrdersConfig',

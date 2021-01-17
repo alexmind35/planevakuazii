@@ -43,9 +43,9 @@ class User(AbstractUser):
     name = CharField("Имя пользователя", max_length=255)
     phone = CharField("Телефон", max_length=11)
     email = EmailField("Электронная почта", unique=True, max_length=255)
-    photo = models.ImageField("Фото", upload_to="photo", blank=True, null=True)
     organization_name = models.CharField("Название организации", max_length=255)
     organization_address = models.CharField("Адрес организации", max_length=255)
+    photo = models.ImageField("Фото", upload_to="photo", blank=True, null=True)
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
@@ -55,7 +55,6 @@ class User(AbstractUser):
     class Meta:
         verbose_name = "Пользователь"
         verbose_name_plural = "Пользователи"
-
 
     def __str__(self):
         return self.email

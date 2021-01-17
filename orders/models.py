@@ -5,8 +5,7 @@ User = get_user_model()
 
 
 class Service(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    name = models.CharField("Название услуги", max_length=255)
+    name_service = models.CharField("Название услуги", max_length=255)
     price = models.PositiveIntegerField("Цена")
 
     class Meta:
@@ -15,19 +14,8 @@ class Service(models.Model):
 
 
     def __str__(self):
-        return f'User: {self.user}, name: {self.name}, price: {self.price}'
+        return f'Услуга: {self.name_service}, цена: {self.price}'
 
-
-class Image(models.Model):
-    service = models.ForeignKey(Service, on_delete=models.CASCADE)
-    image_scheme = models.ImageField("Изображение план-схемы", upload_to="orders/service")
-
-    class Meta:
-        verbose_name = "План-схема"
-        verbose_name_plural = "План-схемы"
-
-    def __str__(self):
-        return "Service: {}, image_scheme: {}".format(self.service, self.image_scheme)
 
 
 class Order(models.Model):
@@ -49,10 +37,22 @@ class Order(models.Model):
         ordering = ["-date_order"]
 
     def __str__(self):
-        return "Customer: {}, service: {}, date_order: {}, time_order: {}, status_orders: {}, count_images: {}".format(
+        return "Пользователь: {}, {}, дата создания: {}, время создания: {}, статус: {}, количество схем: {}".format(
             self.user,
             self.service,
             self.date_order,
             self.time_order,
             self.get_status_order_display(),
             self.count_images)
+
+
+class Imagescheme(models.Model):
+    order = models.ForeignKey(Order, on_delete=models.CASCADE)
+    image_plan_scheme = models.ImageField("Изображение план-схемы", upload_to="orders/imagescheme")
+
+    class Meta:
+        verbose_name = "План-схема"
+        verbose_name_plural = "План-схемы"
+
+    def __str__(self):
+        return "Заказ: {}, изображение: {}".format(self.order, self.image_plan_scheme)
