@@ -1,8 +1,13 @@
 from django.urls import path
+from rest_framework.routers import DefaultRouter
 
 from orders.views import OrderListView, OrderCreateView, OrderUpdateView, OrderRetrieveView, OrderDestroyView, \
     ServiceListView, ServiceCreateView, ServiceUpdateView, ServiceRetrieveView, ServiceDestroyView, ImageschemeListView, \
-    ImageschemeCreateView, ImageschemeUpdateView, ImageschemeRetrieveView, ImageschemeDestroyView
+    ImageschemeCreateView, ImageschemeUpdateView, ImageschemeRetrieveView, ImageschemeDestroyView, AdminServiceViewSet
+
+router = DefaultRouter()
+router.register(r'admin/service', AdminServiceViewSet, basename='admin-service')
+
 
 urlpatterns = [
     path('services/all', ServiceListView.as_view()),
@@ -22,4 +27,6 @@ urlpatterns = [
     path('imagescheme/update/<int:pk>', ImageschemeUpdateView.as_view()),
     path('imagescheme/detail/<int:pk>', ImageschemeRetrieveView.as_view()),
     path('imagescheme/delete/<int:pk>', ImageschemeDestroyView.as_view()),
+
 ]
+urlpatterns += router.urls

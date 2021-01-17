@@ -1,6 +1,6 @@
 from rest_framework import generics
 
-from .api.serializers import UserSerializer
+from .api.serializers import UserSerializer, UserCreateSerializer
 from .models import *
 
 
@@ -13,7 +13,7 @@ class UserListView(generics.ListAPIView):
 # Создание юзера
 class UserCreateView(generics.CreateAPIView):
     queryset = User.objects.all()
-    serializer_class = UserSerializer
+    serializer_class = UserCreateSerializer
 
 
 # Обновление юзера

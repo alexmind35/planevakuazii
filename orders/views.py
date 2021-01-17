@@ -1,8 +1,13 @@
 from rest_framework import generics
+from rest_framework.viewsets import ModelViewSet
 
 from .api.serializers import OrderSerializer, ServiceSerializer, ImageschemeSerializer
 from .models import *
 
+
+class AdminServiceViewSet(ModelViewSet):
+    queryset = Service.objects.all()
+    serializer_class = ServiceSerializer
 
 # ******************************УСЛУГИ************************************
 # Вывод списка всех услуг
