@@ -1,27 +1,29 @@
 from rest_framework import serializers
+from rest_framework.serializers import ModelSerializer
 
 from accounts.api.serializers import UserSerializer
-from ..models import Service, Imagescheme, Order
-
-
-class ServiceSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Service
-        fields = '__all__'
+from orders.models import Service, Order, Imagescheme
 
 
 
-class OrderSerializer(serializers.ModelSerializer):
+
+class OrderSerializer(ModelSerializer):
     user = UserSerializer()
-    service = ServiceSerializer()
     status_order = serializers.CharField(source='get_status_order_display')
 
     class Meta:
         model = Order
         fields = '__all__'
 
+class ServiceSerializer(ModelSerializer):
+    order = OrderSerializer()
+    class Meta:
+        model = Service
+        fields = '__all__'
 
-class ImageschemeSerializer(serializers.ModelSerializer):
+
+
+class ImageschemeSerializer(ModelSerializer):
     order = OrderSerializer()
 
     class Meta:

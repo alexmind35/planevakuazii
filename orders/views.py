@@ -4,97 +4,97 @@ from rest_framework.viewsets import ModelViewSet
 from .api.serializers import OrderSerializer, ServiceSerializer, ImageschemeSerializer
 from .models import *
 
+# ******************************УСЛУГИ************************************
 
 class AdminServiceViewSet(ModelViewSet):
     queryset = Service.objects.all()
     serializer_class = ServiceSerializer
 
-# ******************************УСЛУГИ************************************
 # Вывод списка всех услуг
-class ServiceListView(generics.ListAPIView):
+class ServiceListView(ModelViewSet):
     queryset = Service.objects.all()
     serializer_class = ServiceSerializer
 
 
 # Создание услуги
-class ServiceCreateView(generics.CreateAPIView):
+class ServiceCreateView(ModelViewSet):
     queryset = Service.objects.all()
     serializer_class = ServiceSerializer
 
 
 # Обновление конкретной услуги
-class ServiceUpdateView(generics.UpdateAPIView):
+class ServiceUpdateView(ModelViewSet):
     queryset = Service.objects.all()
     serializer_class = ServiceSerializer
 
 
 # Просмотр конкретной услуги
-class ServiceRetrieveView(generics.RetrieveAPIView):
+class ServiceRetrieveView(ModelViewSet):
     queryset = Service.objects.all()
     serializer_class = ServiceSerializer
 
 
 # Удаление конкретной услуги
-class ServiceDestroyView(generics.DestroyAPIView):
+class ServiceDestroyView(ModelViewSet):
     queryset = Service.objects.all()
     serializer_class = ServiceSerializer
 
 # ******************************ИЗОБРАЖЕНИЯ ПЛАН-СХЕМ************************************
 # Вывод списка всех изображений план-схем
-class ImageschemeListView(generics.ListAPIView):
+class ImageschemeListView(ModelViewSet):
     queryset = Imagescheme.objects.all()
     serializer_class = ImageschemeSerializer
 
 
 # Создание изображения план-схемы
-class ImageschemeCreateView(generics.CreateAPIView):
+class ImageschemeCreateView(ModelViewSet):
     queryset = Imagescheme.objects.all()
     serializer_class = ImageschemeSerializer
 
 
 # Обновление конкретного изображения план-схемы
-class ImageschemeUpdateView(generics.UpdateAPIView):
+class ImageschemeUpdateView(ModelViewSet):
     queryset = Imagescheme.objects.all()
     serializer_class = ImageschemeSerializer
 
 
 # Просмотр конкретного изображения план-схемы
-class ImageschemeRetrieveView(generics.RetrieveAPIView):
+class ImageschemeRetrieveView(ModelViewSet):
     queryset = Imagescheme.objects.all()
     serializer_class = ImageschemeSerializer
 
 
 # Удаление конкретного изображения план-схемы
-class ImageschemeDestroyView(generics.DestroyAPIView):
+class ImageschemeDestroyView(ModelViewSet):
     queryset = Imagescheme.objects.all()
     serializer_class = ImageschemeSerializer
 
 # ******************************ЗАКАЗЫ************************************
 # Вывод списка всех заказов
-class OrderListView(generics.ListAPIView):
+class OrderListView(ModelViewSet):
     queryset = Order.objects.all()
     serializer_class = OrderSerializer
 
 
 # Создание заказа
-class OrderCreateView(generics.CreateAPIView):
+class OrderCreateView(ModelViewSet):
     queryset = Order.objects.all()
     serializer_class = OrderSerializer
 
 
 # Обновление конкретного заказа
-class OrderUpdateView(generics.UpdateAPIView):
+class OrderUpdateView(ModelViewSet):
     queryset = Order.objects.all()
     serializer_class = OrderSerializer
 
 
 # Просмотр конкретного заказа
-class OrderRetrieveView(generics.RetrieveAPIView):
+class OrderRetrieveView(ModelViewSet):
     queryset = Order.objects.all()
     serializer_class = OrderSerializer
 
 
 # Удаление конкретного заказа
-class OrderDestroyView(generics.DestroyAPIView):
+class OrderDestroyView(ModelViewSet):
     queryset = Order.objects.all()
     serializer_class = OrderSerializer
