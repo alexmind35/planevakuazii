@@ -10,10 +10,10 @@ class UserOrderViewSet(viewsets.ModelViewSet):
     queryset = Order.objects.all()
     serializer_class = OrderSerializer
 
-
-class AdminOrderViewSet(viewsets.ModelViewSet):
-    queryset = Order.objects.all()
-    serializer_class = OrderSerializer
+    def get_queryset(self):
+        if not self.request.user.is_staff or not self.request.user.is_superuser:
+            return Order.objects.filter(user=self.request.user)
+        return Order.objects.all()
 
 
 # Услуги

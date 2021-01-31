@@ -48,7 +48,7 @@ class Order(models.Model):
 
 class Imagescheme(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE)
-    image_plan_scheme = models.ImageField("Изображение план-схемы", upload_to="orders/imagescheme")
+    image_plan_scheme = models.ImageField("Изображение план-схемы", upload_to="orders/imagescheme/%Y/%m/%d")
 
     class Meta:
         verbose_name = "План-схема"
